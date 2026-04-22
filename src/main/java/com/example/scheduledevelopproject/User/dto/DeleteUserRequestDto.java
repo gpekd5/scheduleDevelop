@@ -3,13 +3,11 @@ package com.example.scheduledevelopproject.User.dto;
 import lombok.Getter;
 
 @Getter
-public class UpdateUserRequestDto {
+public class DeleteUserRequestDto {
 
-    private final String email;
     private final String password;
 
-    public UpdateUserRequestDto(String email, String password) {
-        this.email = email;
+    public DeleteUserRequestDto(String password) {
         this.password = password;
     }
 }
