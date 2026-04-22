@@ -11,26 +11,27 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/schedules")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @PostMapping("/schedules")
+    @PostMapping
     public ResponseEntity<CreateScheduleResponseDto> createSchedule(@RequestBody CreateScheduleRequestDto request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));
     }
 
-    @GetMapping("/schedules")
+    @GetMapping
     public ResponseEntity<List<GetScheduleResponseDto>> findSchedules() {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findSchedules());
     }
 
-    @GetMapping("/schedules/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GetScheduleResponseDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findById(id));
     }
 
-    @PatchMapping("/schedules/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<UpdateScheduleResponseDto> UpdateSchedule(
             @PathVariable Long id,
             @RequestBody UpdateScheduleRequestDto request) {
@@ -38,7 +39,7 @@ public class ScheduleController {
     }
 
 
-    @DeleteMapping("/schedules/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         scheduleService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
