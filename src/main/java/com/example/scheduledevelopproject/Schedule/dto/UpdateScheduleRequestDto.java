@@ -5,12 +5,12 @@ import lombok.Getter;
 @Getter
 public class UpdateScheduleRequestDto {
 
-    private final String userName;
+    private final Long userId;
     private final String title;
     private final String contents;
 
-    public UpdateScheduleRequestDto(String userName, String title, String contents) {
-        this.userName = userName;
+    public UpdateScheduleRequestDto(Long userId, String title, String contents) {
+        this.userId = userId;
         this.title = title;
         this.contents = contents;
     }
