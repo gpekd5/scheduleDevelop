@@ -7,6 +7,10 @@ import com.example.scheduledevelopproject.schedule.dto.*;
 import com.example.scheduledevelopproject.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +30,10 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));
     }
 
-    @GetMapping
-    public ResponseEntity<List<GetScheduleResponseDto>> findSchedules() {
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findSchedules());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<GetScheduleResponseDto>> findSchedules() {
+//        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findSchedules());
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetScheduleResponseDto> findById(@PathVariable Long id) {
@@ -40,7 +44,7 @@ public class ScheduleController {
     public ResponseEntity<UpdateScheduleResponseDto> UpdateSchedule(
             @PathVariable Long id,
             @Valid @RequestBody UpdateScheduleRequestDto request,
-            @SessionAttribute(name="loginUser", required = false) SessionUserDto sessionUser) {
+            @SessionAttribute(name = "loginUser", required = false) SessionUserDto sessionUser) {
 
         if (sessionUser == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
@@ -57,7 +61,7 @@ public class ScheduleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
             @PathVariable Long id,
-            @SessionAttribute(name="loginUser", required = false)SessionUserDto sessionUser) {
+            @SessionAttribute(name = "loginUser", required = false) SessionUserDto sessionUser) {
 
         if (sessionUser == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
@@ -70,5 +74,19 @@ public class ScheduleController {
         scheduleService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @GetMapping
+    public ResponseEntity<Page<GetScheduleResponseDto>> getSchedules(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by("modifiedAt").descending()
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getSchedules(pageable));
+    }
+
 
 }

@@ -7,6 +7,8 @@ import com.example.scheduledevelopproject.schedule.repository.ScheduleRepository
 import com.example.scheduledevelopproject.user.entity.User;
 import com.example.scheduledevelopproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,5 +79,11 @@ public class ScheduleService {
         );
 
         scheduleRepository.deleteById(scheduleId);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<GetScheduleResponseDto> getSchedules(Pageable pageable) {
+        return scheduleRepository.findAll(pageable)
+                .map(GetScheduleResponseDto::from);
     }
 }
