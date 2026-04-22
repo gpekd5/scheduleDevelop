@@ -3,6 +3,8 @@ package com.example.scheduledevelopproject.Schedule.service;
 import com.example.scheduledevelopproject.Schedule.dto.*;
 import com.example.scheduledevelopproject.Schedule.entity.Schedule;
 import com.example.scheduledevelopproject.Schedule.repository.ScheduleRepository;
+import com.example.scheduledevelopproject.User.entity.User;
+import com.example.scheduledevelopproject.User.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +16,21 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public CreateScheduleResponseDto save(CreateScheduleRequestDto request) {
+
+        if (request.getUserId() == null) {
+            throw new IllegalArgumentException("User ID not found.");
+        }
+
+        User user = userRepository.findById(request.getUserId()).orElseThrow(
+                () -> new IllegalStateException("User ID " + request.getUserId() + " not found.")
+        );
+
         Schedule schedule = new Schedule(
-                request.getUserName(),
+                user,
                 request.getTitle(),
                 request.getContents());
 
