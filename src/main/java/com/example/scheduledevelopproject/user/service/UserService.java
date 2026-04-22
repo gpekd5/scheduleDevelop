@@ -41,7 +41,7 @@ public class UserService {
     public GetUserResponseDto findById(Long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("User whit ID " + userId + "not found.")
+                () -> new NotFoundException("User whit ID " + userId + "not found.")
         );
 
         return GetUserResponseDto.from(user);

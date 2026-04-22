@@ -1,5 +1,6 @@
 package com.example.scheduledevelopproject.schedule.service;
 
+import com.example.scheduledevelopproject.global.exception.*;
 import com.example.scheduledevelopproject.schedule.dto.*;
 import com.example.scheduledevelopproject.schedule.entity.Schedule;
 import com.example.scheduledevelopproject.schedule.repository.ScheduleRepository;
@@ -22,11 +23,11 @@ public class ScheduleService {
     public CreateScheduleResponseDto save(CreateScheduleRequestDto request) {
 
         if (request.getUserId() == null) {
-            throw new IllegalArgumentException("User ID not found.");
+            throw new NotFoundException("User ID not found.");
         }
 
         User user = userRepository.findById(request.getUserId()).orElseThrow(
-                () -> new IllegalStateException("User ID " + request.getUserId() + " not found.")
+                () -> new NotFoundException("User ID " + request.getUserId() + " not found.")
         );
 
         Schedule schedule = new Schedule(
@@ -51,7 +52,7 @@ public class ScheduleService {
     public GetScheduleResponseDto findById(Long scheduleId) {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("Schedule whit ID " + scheduleId + "not found.")
+                () -> new NotFoundException("Schedule whit ID " + scheduleId + "not found.")
         );
 
         return GetScheduleResponseDto.from(schedule);
@@ -61,7 +62,7 @@ public class ScheduleService {
     public UpdateScheduleResponseDto update(Long scheduleId, UpdateScheduleRequestDto request) {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("Schedule whit ID " + scheduleId + "not found.")
+                () -> new NotFoundException("Schedule whit ID " + scheduleId + "not found.")
         );
 
         schedule.update(request.getTitle(), request.getContents());
@@ -72,7 +73,7 @@ public class ScheduleService {
     @Transactional
     public void delete(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("Schedule whit ID " + scheduleId + "not found.")
+                () -> new NotFoundException("Schedule whit ID " + scheduleId + "not found.")
         );
 
         scheduleRepository.deleteById(scheduleId);
