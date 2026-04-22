@@ -1,5 +1,6 @@
 package com.example.scheduledevelopproject.user.service;
 
+import com.example.scheduledevelopproject.global.exception.*;
 import com.example.scheduledevelopproject.user.dto.*;
 import com.example.scheduledevelopproject.user.entity.User;
 import com.example.scheduledevelopproject.user.repository.UserRepository;
@@ -17,9 +18,6 @@ public class UserService {
 
     @Transactional
     public CreateUserResponseDto save(CreateUserRequestDto request) {
-        if (request.getPassword().length() < 8) {
-            throw new IllegalStateException("비밀번호는 8글자 이상이여야 합니다.");
-        }
 
         User user = new User(
                 request.getUserName(),
@@ -53,11 +51,11 @@ public class UserService {
     public UpdateUserResponseDto update(Long userId, UpdateUserRequestDto request) {
 
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("User whit ID " + userId + "not found.")
+                () -> new NotFoundException("User whit ID " + userId + "not found.")
         );
 
         if (!user.getPassword().equals(request.getPassword())) {
-            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            throw new BadRequestException("비밀번호가 일치하지 않습니다.");
         }
 
         user.update(request.getEmail());
@@ -69,11 +67,11 @@ public class UserService {
     public void delete(Long userId, DeleteUserRequestDto request) {
 
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("User whit ID " + userId + "not found.")
+                () -> new NotFoundException("User whit ID " + userId + "not found.")
         );
 
         if (!user.getPassword().equals(request.getPassword())) {
-            throw  new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            throw  new BadRequestException("비밀번호가 일치하지 않습니다.");
         }
 
         userRepository.deleteById(userId);

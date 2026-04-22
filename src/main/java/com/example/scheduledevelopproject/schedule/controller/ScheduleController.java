@@ -1,8 +1,11 @@
 package com.example.scheduledevelopproject.schedule.controller;
 
 import com.example.scheduledevelopproject.auth.dto.SessionUserDto;
+import com.example.scheduledevelopproject.global.exception.ForbiddenException;
+import com.example.scheduledevelopproject.global.exception.UnauthorizedException;
 import com.example.scheduledevelopproject.schedule.dto.*;
 import com.example.scheduledevelopproject.schedule.service.ScheduleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,8 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<CreateScheduleResponseDto> createSchedule(@RequestBody CreateScheduleRequestDto request) {
+    public ResponseEntity<CreateScheduleResponseDto> createSchedule(
+            @Valid @RequestBody CreateScheduleRequestDto request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));
     }
 
@@ -35,15 +39,15 @@ public class ScheduleController {
     @PatchMapping("/{id}")
     public ResponseEntity<UpdateScheduleResponseDto> UpdateSchedule(
             @PathVariable Long id,
-            @RequestBody UpdateScheduleRequestDto request,
+            @Valid @RequestBody UpdateScheduleRequestDto request,
             @SessionAttribute(name="loginUser", required = false) SessionUserDto sessionUser) {
 
         if (sessionUser == null) {
-            throw new IllegalStateException("로그인이 필요합니다.");
+            throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
         if (!sessionUser.getId().equals(id)) {
-            throw new IllegalStateException("본인만 수정할 수 있습니다.");
+            throw new ForbiddenException("본인만 수정할 수 있습니다.");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(id, request));
@@ -56,11 +60,11 @@ public class ScheduleController {
             @SessionAttribute(name="loginUser", required = false)SessionUserDto sessionUser) {
 
         if (sessionUser == null) {
-            throw new IllegalStateException("로그인이 필요합니다.");
+            throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
         if (!sessionUser.getId().equals(id)) {
-            throw new IllegalStateException("본인만 수정할 수 있습니다.");
+            throw new ForbiddenException("본인만 삭제할 수 있습니다.");
         }
 
         scheduleService.delete(id);
