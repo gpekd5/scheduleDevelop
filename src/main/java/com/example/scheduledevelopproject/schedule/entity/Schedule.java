@@ -7,6 +7,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 일정 엔티티
+ */
 @Getter
 @Entity
 @Table(name = "schedules")

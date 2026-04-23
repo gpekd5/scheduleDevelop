@@ -3,6 +3,9 @@ package com.example.scheduledevelopproject.comment.dto;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 
+/**
+ * 댓글 생성 요청 데이터 전달 객체
+ */
 @Getter
 public class CreateCommentRequestDto {
 

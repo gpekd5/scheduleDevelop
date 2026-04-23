@@ -3,6 +3,9 @@ package com.example.scheduledevelopproject.user.dto;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 
+/**
+ * 사용자 생성 요청 데이터 전달 객체
+ */
 @Getter
 public class CreateUserRequestDto {
 

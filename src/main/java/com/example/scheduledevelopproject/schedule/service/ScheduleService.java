@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 일정 관련 비즈니스 로직 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -21,6 +24,12 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 일정 저장 처리
+     *
+     * @param request 일정 생성 요청 정보
+     * @return 일정 생성 응답 정보
+     */
     @Transactional
     public CreateScheduleResponseDto save(CreateScheduleRequestDto request) {
 
@@ -42,6 +51,11 @@ public class ScheduleService {
         return CreateScheduleResponseDto.from(saveSchedule);
     }
 
+    /**
+     * 일정 목록 조회 (페이징 조회하면서 사용 안함)
+     *
+     * @return 일정 목록 응답 정보
+     */
     @Transactional(readOnly = true)
     public List<GetScheduleResponseDto> findSchedules() {
         return scheduleRepository.findAll().stream()
@@ -50,6 +64,12 @@ public class ScheduleService {
 
     }
 
+    /**
+     * 일정 단건 조회
+     *
+     * @param scheduleId 일정 식별자
+     * @return 일정 조회 응답 정보
+     */
     @Transactional(readOnly = true)
     public GetScheduleResponseDto findById(Long scheduleId) {
 
@@ -60,6 +80,13 @@ public class ScheduleService {
         return GetScheduleResponseDto.from(schedule);
     }
 
+    /**
+     * 일정 수정 처리
+     *
+     * @param scheduleId 일정 식별자
+     * @param request 일정 수정 요청 정보
+     * @return 일정 수정 응답 정보
+     */
     @Transactional
     public UpdateScheduleResponseDto update(Long scheduleId, UpdateScheduleRequestDto request) {
 
@@ -72,6 +99,11 @@ public class ScheduleService {
         return UpdateScheduleResponseDto.from(schedule);
     }
 
+    /**
+     * 일정 삭제 처리
+     *
+     * @param scheduleId 일정 식별자
+     */
     @Transactional
     public void delete(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
@@ -81,6 +113,12 @@ public class ScheduleService {
         scheduleRepository.deleteById(scheduleId);
     }
 
+    /**
+     * 일정 목록 페이징 조회
+     *
+     * @param pageable 페이지 요청 정보
+     * @return 일정 목록 페이지 응답 정보
+     */
     @Transactional(readOnly = true)
     public Page<GetScheduleResponseDto> getSchedules(Pageable pageable) {
         return scheduleRepository.findAll(pageable)

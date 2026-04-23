@@ -3,6 +3,9 @@ package com.example.scheduledevelopproject.schedule.dto;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 
+/**
+ * 일정 생성 요청 데이터 전달 객체
+ */
 @Getter
 public class CreateScheduleRequestDto {
 
@@ -15,6 +18,13 @@ public class CreateScheduleRequestDto {
     @Size(max = 200, message = "일정 내용은 200자 이하여야 합니다.")
     private final String contents;
 
+    /**
+     * 일정 생성 요청 객체 생성자
+     *
+     * @param userId 사용자 식별자
+     * @param title 일정 제목
+     * @param contents 일정 내용
+     */
     public CreateScheduleRequestDto(Long userId, String title, String contents) {
         this.userId = userId;
         this.title = title;

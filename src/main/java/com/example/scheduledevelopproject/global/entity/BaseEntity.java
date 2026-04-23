@@ -10,6 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * 공통 시간 정보 엔티티
+ */
 @Getter
 @MappedSuperclass //공통 필드를 자식 엔티티에 상속해서 쓰게 해주는 JPA 어노테이션!!
 @EntityListeners(AuditingEntityListener.class)
