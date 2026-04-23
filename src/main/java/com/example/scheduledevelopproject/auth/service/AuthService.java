@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 인증 관련 비즈니스 로직 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -18,6 +21,12 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * 로그인 요청 검증 및 세션 사용자 정보 반환
+     *
+     * @param request 로그인 요청 정보
+     * @return 세션 사용자 정보
+     */
     @Transactional
     public SessionUserDto login(@Valid LoginRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(

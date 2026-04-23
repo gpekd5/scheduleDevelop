@@ -8,18 +8,27 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+/**
+ * 인증 관련 요청을 처리하는 컨트롤러
+ */
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * 로그인 요청 처리
+     *
+     * @param request 로그인 요청 정보
+     * @param session 현재 HTTP 세션
+     * @return 로그인 성공 응답
+     */
     @PostMapping("/login")
     public ResponseEntity<Void> login(@Valid @RequestBody LoginRequestDto request, HttpSession session) {
         SessionUserDto sessionUser = authService.login(request);
@@ -27,6 +36,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * 로그아웃 요청 처리
+     *
+     * @param sessionUser 세션 로그인 사용자 정보
+     * @param session 현재 HTTP 세션
+     * @return 로그아웃 결과 응답
+     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             @SessionAttribute(name = "loginUser", required = false) SessionUserDto sessionUser,

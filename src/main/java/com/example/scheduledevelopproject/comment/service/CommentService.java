@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 댓글 관련 비즈니스 로직 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -22,6 +25,13 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
+    /**
+     * 댓글 저장 처리
+     *
+     * @param scheduleId 일정 식별자
+     * @param request 댓글 생성 요청 정보
+     * @return 댓글 생성 응답 정보
+     */
     @Transactional
     public CreateCommentResponseDto save(Long scheduleId,CreateCommentRequestDto request) {
 
@@ -36,6 +46,12 @@ public class CommentService {
         return CreateCommentResponseDto.from(savedComment);
     }
 
+    /**
+     * 댓글 목록 조회
+     *
+     * @param scheduleId 일정 식별자
+     * @return 댓글 목록 응답 정보
+     */
     @Transactional(readOnly = true )
     public List<GetCommentResponseDto> findComments(Long scheduleId) {
         return commentRepository.findAllByScheduleId(scheduleId)

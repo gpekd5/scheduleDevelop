@@ -26,12 +26,24 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
+    /**
+     * 댓글 객체 생성자
+     *
+     * @param contents 댓글 내용
+     * @param user 작성자 정보
+     * @param schedule 일정 정보
+     */
     public Comment(String contents, User user, Schedule schedule) {
         this.contents = contents;
         this.user = user;
         this.schedule = schedule;
     }
 
+    /**
+     * 댓글 내용 수정
+     *
+     * @param contents 댓글 내용
+     */
     public void update(String contents) {
         this.contents = contents;
     }

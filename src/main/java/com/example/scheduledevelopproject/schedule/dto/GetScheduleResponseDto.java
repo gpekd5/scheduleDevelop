@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ * 일정 조회 응답 데이터 전달 객체
+ */
 @Getter
 public class GetScheduleResponseDto {
     private final Long id;
@@ -14,6 +17,16 @@ public class GetScheduleResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
+    /**
+     * 일정 조회 응답 객체 생성자
+     *
+     * @param id 일정 식별자
+     * @param userId 사용자 식별자
+     * @param title 일정 제목
+     * @param contents 일정 내용
+     * @param createdAt 생성 일시
+     * @param modifiedAt 수정 일시
+     */
     public GetScheduleResponseDto(Long id, Long userId, String title, String contents, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.userId = userId;
@@ -23,6 +36,12 @@ public class GetScheduleResponseDto {
         this.modifiedAt = modifiedAt;
     }
 
+    /**
+     * Schedule 엔티티 기반 GetScheduleResponseDto 생성
+     *
+     * @param schedule 일정 엔티티
+     * @return 일정 조회 응답 객체
+     */
     public static GetScheduleResponseDto from(Schedule schedule) {
         return new GetScheduleResponseDto(
                 schedule.getId(),
